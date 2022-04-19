@@ -72,14 +72,20 @@ mod tests {
     use std::fmt::format;
 
     use crate::{rand_group,rand_group_select};
-
+    use std::collections::HashSet;
     #[test]
     fn test_range_group(){
 
         let mut arr = vec![];
         let people_num = 200;
-        for i in 0..people_num{
-            arr.push(gen_rand_string());
+        let mut hashset:HashSet<String> = HashSet::new();
+        
+        for _ in 0..people_num{
+            let mut p = gen_rand_string();
+            while !hashset.insert(p.clone()){
+                p = gen_rand_string();
+            }
+            arr.push(p);
         }
         
         {// 可以整除的情况   
@@ -111,6 +117,19 @@ mod tests {
             for v in group{
                 assert!(v.len()==0);
             }
+        }
+        {// 测试是否有重复和人数是否正确
+            let k = 19;
+            let group = rand_group(&arr, k);
+            let mut Hset = HashSet::new();
+            let mut count = 0;
+            for v in group{
+                for p in v{
+                    count+=1;
+                    assert!(Hset.insert(p),"rand_group_select has repetition people");
+                }
+            }
+            assert!(count == arr.len(),"rand_group_select number of error");
         }
 
     }
@@ -119,8 +138,14 @@ mod tests {
     fn test_range_group_select(){
         let mut arr = vec![];
         let people_num = 200;
+        let mut hashset:HashSet<String> = HashSet::new();
+        
         for _ in 0..people_num{
-            arr.push(gen_rand_string());
+            let mut p = gen_rand_string();
+            while !hashset.insert(p.clone()){
+                p = gen_rand_string();
+            }
+            arr.push(p);
         }
         
         {// 可以整除的情况   
@@ -152,6 +177,19 @@ mod tests {
             for v in group{
                 assert!(v.len()==0);
             }
+        }
+        {// 测试是否有重复和人数是否正确
+            let k = 19;
+            let group = rand_group_select(&arr, k);
+            let mut Hset = HashSet::new();
+            let mut count = 0;
+            for v in group{
+                for p in v{
+                    count+=1;
+                    assert!(Hset.insert(p),"rand_group_select has repetition people");
+                }
+            }
+            assert!(count == arr.len(),"rand_group_select number of error");
         }
     }
 
