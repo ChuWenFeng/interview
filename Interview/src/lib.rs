@@ -56,7 +56,7 @@ mod tests {
             arr.push(gen_rand_string());
         }
         
-        {   
+        {// 可以整除的情况   
             let k = 20;
             let group = rand_group(&arr, k);
             let num_team = people_num/k;
@@ -65,7 +65,7 @@ mod tests {
             }
         }
 
-        {
+        {// 无法整除的情况
             let k = 19;
             let group = rand_group(&arr, k);
             let num_team = people_num/k;
@@ -78,7 +78,7 @@ mod tests {
             let group = rand_group(&arr, k);
             assert!(group.len() == 1 && group[0].len() == arr.len());
         }
-        {
+        {// 人数为0的情况
             let k = 18;
             let arr = vec![];
             let group = rand_group(&arr, k);
