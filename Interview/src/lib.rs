@@ -2,6 +2,8 @@ use rand::{self, Rng};
 
 
 /// 将员工均匀分成k组，每组人数 people_num / k 到 (people_num / k) + 1
+/// 对每个员工模拟选择分组，分组人数达到上限就线性往后选择分组
+/// 时间复杂度O(n)，
 pub fn rand_group(arr:&Vec<String>,k:usize)->Vec<Vec<String>>{
     if k == 0{
         return vec![arr.clone()];
@@ -40,7 +42,8 @@ pub fn rand_group(arr:&Vec<String>,k:usize)->Vec<Vec<String>>{
     group
 }
 
-/// 模拟分组选择
+/// 模拟分组选择员工
+/// 时间复杂度O(n),n次选择和交换
 fn rand_group_select(arr:&Vec<String>,k:usize)->Vec<Vec<String>>{
     if k == 0{
         return vec![arr.clone()];
